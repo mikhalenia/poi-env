@@ -1,0 +1,20 @@
+{
+  "listen": {
+    "http": 80
+  },
+  "redis": {
+    "host": "poi-redis",
+    "port": 6379
+  },
+  "mysql": {
+    "host": "poi-mysql",
+    "port": 3306,
+    "db": "poi",
+    "user": "poi",
+    "secret": "poi"
+  },
+  "graphite": {
+    "dsn": "plaintext://poi-graphite:2003/",
+    "prefix": "poi"
+  }
+}

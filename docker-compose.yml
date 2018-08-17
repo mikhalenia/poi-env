@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  poi-server:
+    image: poi-server
+    container_name: poi-server
+    depends_on: [mysql, redis]
+    build:
+      context: ./images/poi-server
+    environment:
+      - MYSQL_POI_USER
+      - MYSQL_POI_PASSWORD
+      - MYSQL_POI_DATABASE
+    ports:
+      - "${LOCAL_POI_SERVER_HTTP_PORT}:80"
+    command: >
+      wait-for-it -t 0 poi-mysql:3306 --
+      wait-for-it -t 0 poi-redis:6379 --
+      /entrypoint.sh
+ 
+  mysql:
+    image: poi-mysql
+    container_name: poi-mysql
+    build:
+      context: ./images/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
+      - "MYSQL_USER=${MYSQL_POI_USER}"
+      - "MYSQL_PASSWORD=${MYSQL_POI_PASSWORD}"
+      - "MYSQL_DATABASE=${MYSQL_POI_DATABASE}"
+      - "INIT_TOKUDB=1"
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - "${PATH_TO_MYSQL_DATA}:/tmp/lib/mysql"
+
+  redis:
+    image: poi-redis
+    container_name: poi-redis
+    build:
+      context: ./images/redis
+    volumes:
+      - "${PATH_TO_REDIS_DATA}:/var/lib/redis"
+
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: poi-graphite
+    ports:
+      - "${LOCAL_GRAPHITE_PORT}:80"
+
+  grafana:
+    image: grafana/grafana
+    container_name: poi-grafana
+    ports:
+      - "${LOCAL_GRAFANA_PORT}:3000"
+    environment:
+      - "GF_SERVER_ROOT_URL"
+      - "GF_SECURITY_ADMIN_PASSWORD"
