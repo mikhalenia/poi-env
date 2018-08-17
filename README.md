@@ -35,4 +35,4 @@ docker-compose up
 REST API will be awailable on http://localhost:8080
 Grafana will be awailable on http://localhost:3000
 Please login into grafana and add new graphite source which is awailable on http://localhost:8081
-Then you can import a [dasboard by REST actions](https://github.com/mikhalenia/poi-env/grafana-dashboard.json)
+Then you can import a [dasboard by REST actions](https://github.com/mikhalenia/poi-env/blob/master/grafana-dashboard.json)
