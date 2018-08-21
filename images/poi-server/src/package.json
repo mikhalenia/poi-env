@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "POI REST api server",
   "scripts": {
-    "run": "./server.js --config=./config/poi.json"
+    "run": "./server.js"
   },
   "dependencies": {
     "poi-server": "git+https://github.com/mikhalenia/poi-server.git"
